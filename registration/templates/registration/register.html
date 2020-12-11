@@ -1,0 +1,52 @@
+{% extends 'registration/auth_base.html' %}
+
+{% block content %}
+<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
+    <form class="login100-form" method="POST">
+        {% csrf_token %}
+        <span class="login100-form-title p-b-33">
+            Account Register
+        </span>
+
+        <div class="form-input">
+            <label for="username">Username</label>
+            <div class="wrap-input100">
+                <input class="input100 register" type="text" name="username"">
+                <span class="focus-input100-1"></span>
+                <span class="focus-input100-2"></span>
+            </div>
+        </div>
+        <p class="text-danger">{{ form.username.errors|striptags }}</p>
+        
+        <div class="form-input mt-3">
+            <label for="password1">Password</label>
+            <div class="wrap-input100">
+                <input class="input100 register" type="password" name="password1">
+                <span class="focus-input100-1"></span>
+                <span class="focus-input100-2"></span>
+            </div>
+        </div>
+        <p class="text-danger">{{ form.password1.errors|striptags }}</p>
+        
+        <div class="form-input mt-3">
+            <label for="password2">Confirm Password</label>
+            <div class="wrap-input100">
+                <input class="input100 register" type="password" name="password2">
+                <span class="focus-input100-1"></span>
+                <span class="focus-input100-2"></span>
+            </div>
+        </div>
+        <p class="text-danger">{{ form.password2.errors|striptags }}</p>
+
+        <div class="container-login100-form-btn m-t-20">
+            <button class="login100-form-btn" type="submit">
+                Sign Up
+            </button>
+        </div>
+
+        <div class="text-center pt-3 pb-3">
+            <a href="{% url 'login' %}">I have an account</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h3>Hi, {{ request.user.username }}</h3>
+                        <a href="{% url 'logout' %}">Sign Out</a>
+                        <img src="{% static 'img/vector.jpg' %}" alt="" class="img-fluid mt-5">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Your Information</h4>
+                        <p>First Name: {{ request.user.first_name }}</p>
+                        <p>Last Name: {{ request.user.last_name }}</p>
+                        <p>Email: {{ request.user.email }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

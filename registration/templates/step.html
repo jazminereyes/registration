@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title%}Step {{step}}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="stepwizard">
+        <div class="stepwizard-row setup-panel">
+            {% for btn in buttons %}
+                <div class="stepwizard-step col-xs-3"> 
+                    <a href="{% url 'step' step=btn.step %}" type="button" data-step="{{btn.step}}" class="btn {% if btn.active %}btn-success{% else %}btn-default{% endif %} btn-circle btn-step" {% if btn.disabled %}disabled="disabled"{% endif %}>{{btn.step}}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+                
+    <form role="form" method="POST">
+        {% csrf_token %}
+
+        {% if step == 1 %}
+            <div class="panel panel-primary setup-content" id="step-1">
+                <div class="panel-heading"></div>
+                <div class="panel-body">
+                    <div class="form-group mt-5">
+                        <label class="control-label">First Name <span class="text-danger">*</span></label>
+                        <div class="wrap-input100 m-b-20">
+                            <input id="first_name" type="text" class="input100 register" name="first_name" value="{{ state.user.first_name }}" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <a href="{% url 'step' step=2 %}" class="login100-form-btn nextBtn btn-step" data-step={{ step }}>Next</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% elif step == 2 %}
+            <div class="panel panel-primary setup-content" id="step-2">
+                <div class="panel-heading"></div>
+                <div class="panel-body">
+                    <div class="form-group mt-5">
+                        <label class="control-label">Last Name <span class="text-danger">*</span></label>
+                        <div class="wrap-input100 m-b-20">
+                            <input id="last_name" type="text" class="input100 register" name="last_name" value="{{state.user.last_name}}" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <a href="{% url 'step' step=3 %}" class="login100-form-btn nextBtn btn-step" data-step={{ step }}>Next</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% elif step == 3 %}
+            <div class="panel panel-primary setup-content" id="step-3">
+                <div class="panel-heading"></div>
+                <div class="panel-body">
+                    <div class="form-group mt-5">
+                        <label class="control-label">Email <span class="text-danger">*</span></label>
+                        <div class="wrap-input100 m-b-20">
+                            <input id="email" type="text" class="input100 register" name="email" value="{{state.user.email}}" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <a href="{% url 'step' step=4 %}" class="login100-form-btn nextBtn btn-step" data-step={{ step }}>Next</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </form>
+
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <a href="{% url 'logout' %}">Sign Out</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+     $(document).ready(function () {
+        $('.btn-step').click(function(e){
+            e.preventDefault();
+            var field = $('.register').val();
+            var csrf = $('[name="csrfmiddlewaretoken"]').val();
+            var step = {{ step }};
+            var data = $(this).data('step');
+
+            if(!field && data >= step){
+                swal("Error", "This field is required!", "error");
+            }else{
+                if(data >= step){
+                    var url = "{% url 'step_ajax' %}";
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            form_value: field,
+                            csrfmiddlewaretoken: csrf,
+                            step: step
+                        },
+                        success: function(data){
+                            console.log(data);
+                        },
+                    });
+                }
+                window.location.href = $(this).attr('href');
+            }
+        });
+    });
+</script>
+{% endblock %}

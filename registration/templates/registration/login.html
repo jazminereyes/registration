@@ -1,0 +1,46 @@
+{% extends 'registration/auth_base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
+    <form class="login100-form" method="POST">
+        {% csrf_token %}
+        <span class="login100-form-title p-b-33">
+            Account Login
+        </span>
+
+        {% if form.errors %}
+			{% for key, value in form.errors.items %}
+				{% if key == '__all__' %}
+					<p class="text-danger">{{ value | striptags }}</p>
+				{% endif %}
+			{% endfor %}
+        {% endif %}
+            
+        <div class="wrap-input100">
+            <input class="input100" type="text" name="username" placeholder="Username">
+            <span class="focus-input100-1"></span>
+            <span class="focus-input100-2"></span>
+        </div>
+        <p class="text-danger">{{ form.username.errors|striptags }}</p>
+
+        <div class="wrap-input100 mt-3">
+            <input class="input100" type="password" name="password" placeholder="Password">
+            <span class="focus-input100-1"></span>
+            <span class="focus-input100-2"></span>
+        </div>
+        <p class="text-danger">{{ form.password.errors|striptags }}</p>
+
+        <div class="container-login100-form-btn m-t-20">
+            <button class="login100-form-btn" type="submit">
+                Sign in
+            </button>
+        </div>
+
+        <div class="text-center p-t-45 p-b-4">
+            <a href="{% url 'register' %}">Register</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
