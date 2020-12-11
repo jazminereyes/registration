@@ -32,3 +32,5 @@ cd registration
 python manage.py migrate
 python manage.py runserver
 ```
+
+Access the web application in your browser by navigating to `localhost:8000`
